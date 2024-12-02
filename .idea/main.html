@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino-Glücksrad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: radial-gradient(circle, #222, #111);
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: #ffcc00;
+        }
+
+        #wheel-container {
+            position: relative;
+            margin: 50px auto;
+            width: 400px;
+            height: 400px;
+        }
+
+        #wheel {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                    #f44336 0 20%,
+                    #3f51b5 20% 40%,
+                    #4caf50 40% 60%,
+                    #ff9800 60% 80%,
+                    #9c27b0 80% 100%
+            );
+            transform-origin: center;
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+        }
+
+        #pointer {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 40px;
+            background: #ffcc00;
+            clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+        }
+
+        #spinner {
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #ffcc00;
+            color: #111;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #spinner:hover {
+            background: #ffc107;
+        }
+
+        #result {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+    </style>
+</head>
+<body>
+<h1>Glücksrad</h1>
+<div id="wheel-container">
+    <div id="pointer"></div>
+    <div id="wheel"></div>
+</div>
+<button id="spinner">Dreh!</button>
+<div id="result"></div>
+
+<script>
+    const wheel = document.getElementById('wheel');
+    const spinner = document.getElementById('spinner');
+    const result = document.getElementById('result');
+
+    const options = ["Essen gehen", "Laufen gehen", "Rauchen", "Nix", "Test"];
+    let isSpinning = false;
+
+    spinner.addEventListener('click', () => {
+        if (isSpinning) return;
+        isSpinning = true;
+
+        // Zufällige Position berechnen
+        const randomIndex = Math.floor(Math.random() * options.length);
+        const randomDegree = 360 * 5 + randomIndex * (360 / options.length); // Mehrere Runden drehen
+
+        // Rad drehen
+        wheel.style.transform = `rotate(-${randomDegree}deg)`;
+
+        // Ergebnis nach 5 Sekunden anzeigen
+        setTimeout(() => {
+            const selectedOption = options[randomIndex];
+            result.innerText = `Ergebnis: ${selectedOption}`;
+            isSpinning = false;
+        }, 5000);
+    });
+</script>
+</body>
+</html>
